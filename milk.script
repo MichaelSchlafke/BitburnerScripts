@@ -1,0 +1,34 @@
+servername = args[0];
+while (true) {
+  sec_not_minimized = (getServerSecurityLevel(servername) >= getServerMinSecurityLevel(servername) * 1.1);
+  money_maxed = (getServerMoneyAvailable(servername) >= getServerMaxMoney(servername) * 0.99);
+
+  beginn_sec = getServerSecurityLevel(servername);
+  sec = 0.004;
+  gain = 0;
+  if (!money_maxed) {
+    gain = grow(servername);
+  }
+  loss = hack(servername);
+  if (loss == 0) {
+    i = 0;
+    while (sec_not_minimized && i <= 10) {
+      weaken(servername);
+      i++;
+    }
+  }
+  else {
+    sec += 0.002;
+    while (gain < loss && (!money_maxed)) {
+      gain += grow(servername);
+      sec += 0.004;
+    }
+  }
+  while (sec > 0 && sec_not_minimized) {
+    weaken(servername);
+    sec -= 0.05;
+  }
+  net_money = gain - loss
+  net_sec = beginn_sec - getServerSecurityLevel(servername);
+  tprint(servername + ": money grew by " + net_money + ", sec by " + net_sec + ", hacked " + loss);
+}
