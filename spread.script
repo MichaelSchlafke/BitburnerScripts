@@ -7,10 +7,7 @@ for (i = 0; i < neighbours.length; i++) {
 	}
 	ram = getServerMaxRam(getHostname()) - getServerUsedRam(getHostname());
 	//noch genug RAM?
-	if (ram < getScriptRam("milk.script")) {
-		tprint("Operation Exceeded RAM available on " + getHostname() + " in Iteration " + i + " of " + neighbours.length);
-		break;
-	}
+
 	//root access?
 	if (!hasRootAccess(servername)) {
 		//hacking level ausreichend?
@@ -30,7 +27,8 @@ for (i = 0; i < neighbours.length; i++) {
 	//das melken starten
 	if (hasRootAccess(servername)) {
 		//schon am melken?
-		if (!isRunning("milk.script", getHostname(), servername)) {
+		ram_check = ram >= getScriptRam("milk.script")
+		if ((!isRunning("milk.script", getHostname(), servername))&&ram_check) {
 			run("milk.script", 1, servername); //TODO: Anzahl threads abhängig von Server machen
 		}
 		//Skripte verbreiten
@@ -42,4 +40,11 @@ for (i = 0; i < neighbours.length; i++) {
 		}
 	}
 
+}
+
+
+ram = getServerMaxRam(getHostname()) - getServerUsedRam(getHostname());
+//noch genug RAM?
+if (ram < getScriptRam("milk.script")) {
+		tprint("Operation Exceeded RAM available on " + getHostname() );
 }
