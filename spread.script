@@ -1,6 +1,6 @@
-neighbours = scan()
-for (let i = 0; i < neigbours.length; i++) {
-	servername = neigbours[i];
+neighbours = scan();
+for (i = 0; i < neighbours.length; i++) {
+	servername = neighbours[i];
 	//saveguard
 	if (servername == "home") {
 		continue;
@@ -8,7 +8,7 @@ for (let i = 0; i < neigbours.length; i++) {
 	ram = getServerMaxRam(getHostname()) - getServerUsedRam(getHostname());
 	//noch genug RAM?
 	if (ram < getScriptRam("milk.script")) {
-		tprint("Operation Exceeded RAM available on " + getHostname() + " in Iteration " + i + " of " + neigbours.length);
+		tprint("Operation Exceeded RAM available on " + getHostname() + " in Iteration " + i + " of " + neighbours.length);
 		break;
 	}
 	//root access?
