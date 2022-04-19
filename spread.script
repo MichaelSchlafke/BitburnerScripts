@@ -1,0 +1,12 @@
+neighbours = scan()
+for (let i = 0; i < neigbours.length; i++) {
+	servername = neigbours[i];
+	if (isRunning("milk.script", getHostname(), servername)) { continue; }
+	ram = getServerMaxRam(getHostname()) - getServerUsedRam(getHostname());
+	if (ram < getScriptRam("milk.script")) {
+		tprint("Operation Exceeded RAM available on " + getHostname() + " in Iteration " + i + " of " + neigbours.length)
+		break;
+	}
+
+	if (!fileExists("milk.script", servername))
+}
