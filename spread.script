@@ -1,8 +1,10 @@
 neighbours = scan()
 for (let i = 0; i < neigbours.length; i++) {
 	servername = neigbours[i];
-	//schon am melken?
-	if (isRunning("milk.script", getHostname(), servername)) { continue; }
+	//saveguard
+	if (servername = "home") {
+		continue;
+	}
 	ram = getServerMaxRam(getHostname()) - getServerUsedRam(getHostname());
 	//noch genug RAM?
 	if (ram < getScriptRam("milk.script")) {
@@ -10,9 +12,9 @@ for (let i = 0; i < neigbours.length; i++) {
 		break;
 	}
 	//root access?
-	if(!hasRootAccess(servername)){
+	if (!hasRootAccess(servername)) {
 		//hacking level ausreichend?
-		if( getHackingLevel()<getServerRequiredHackingLevel(servername)){
+		if (getHackingLevel() < getServerRequiredHackingLevel(servername)) {
 			tprint("Hackingskills insufficient to hack " + servername);
 			continue;
 		}
@@ -22,19 +24,22 @@ for (let i = 0; i < neigbours.length; i++) {
 				nuke(servername);
 				break;
 			default:
-				tprint("Tools insufficient to break into " + servername )
+				tprint("Tools insufficient to break into " + servername)
 		}
 	}
 	//das melken starten
-	if(hasRootAccess(servername)){
-		run("milk.script", 1, servername); //TODO: Anzahl threads abhängig von Server machen
-		//run("spread.script"); //needs to runn on servername
+	if (hasRootAccess(servername)) {
+		//schon am melken?
+		if (!isRunning("milk.script", getHostname(), servername)) {
+			run("milk.script", 1, servername); //TODO: Anzahl threads abhängig von Server machen
+		}
+		//Skripte verbreiten
+		files = ["milk.script", "spread.script"]
+		scp(files, getHostname(), servername);
+		//schon am spreaden?
+		if (!isRunning("spread.script", servername)) {
+			exec("spread.script", servername); //spread auf neuem server starten
+		}
 	}
 
-	/*
-	//Skripte verbreiten
-	if (!fileExists("milk.script", servername)){
-
-	}
-	*/
 }
