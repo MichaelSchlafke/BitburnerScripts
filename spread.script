@@ -1,4 +1,5 @@
 neighbours = scan();
+neighbours[neighbours.length] = getHostname();
 for (i = 0; i < neighbours.length; i++) {
 	servername = neighbours[i];
 	//saveguard
@@ -6,7 +7,8 @@ for (i = 0; i < neighbours.length; i++) {
 		continue;
 	}
 	ram = getServerMaxRam(getHostname()) - getServerUsedRam(getHostname());
-	//noch genug RAM?
+	//wie viele threads mindestens verfügbar
+	threads_min = ram / neighbours.length; //UNFERTIG!!!!!!!!!!!!!!
 
 	//root access?
 	if (!hasRootAccess(servername)) {
@@ -17,6 +19,10 @@ for (i = 0; i < neighbours.length; i++) {
 		}
 		//Zugriff auf die notwendige Anzahl an Ports erschaffen, dann NUKE.exe
 		switch (getServerNumPortsRequired(servername)) {
+			case 2:
+				ftpcrack(servername);
+			case 1:
+				brutessh(servername);
 			case 0:
 				nuke(servername);
 				break;
