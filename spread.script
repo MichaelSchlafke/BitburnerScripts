@@ -2,7 +2,7 @@ neighbours = scan()
 for (let i = 0; i < neigbours.length; i++) {
 	servername = neigbours[i];
 	//saveguard
-	if (servername = "home") {
+	if (servername == "home") {
 		continue;
 	}
 	ram = getServerMaxRam(getHostname()) - getServerUsedRam(getHostname());
